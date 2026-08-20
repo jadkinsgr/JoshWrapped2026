@@ -178,6 +178,42 @@
   @keyframes slideRight{ from{opacity:0;transform:translateX(-22px);} to{opacity:1;transform:translateX(0);} }
   .rank{ font-family:var(--display); font-weight:800; font-size:19px; color:var(--green-bright); min-width:22px; }
 
+  /* connection web */
+  .webchart{ margin-top:20px; }
+  .webchart svg{ width:100%; height:210px; overflow:visible; }
+  .wline{ stroke:rgba(245,242,234,.4); stroke-width:2; stroke-linecap:round; stroke-dasharray:1; stroke-dashoffset:1; }
+  .slide.active .wline{ animation:wdraw .6s ease forwards; }
+  .slide.active .wline:nth-of-type(1){ animation-delay:.45s; }
+  .slide.active .wline:nth-of-type(2){ animation-delay:.6s; }
+  .slide.active .wline:nth-of-type(3){ animation-delay:.75s; }
+  .slide.active .wline:nth-of-type(4){ animation-delay:.9s; }
+  @keyframes wdraw{ to{ stroke-dashoffset:0; } }
+
+  .wnode{ opacity:0; }
+  .slide.active .wnode{ animation:popIn .5s cubic-bezier(.34,1.56,.64,1) both; }
+  .wcenter{ fill:var(--green-bright); filter:drop-shadow(0 0 14px var(--green-glow)); }
+  .slide.active .wcenter{ animation-delay:.1s; }
+  .wn1{ fill:var(--lilac); }
+  .wn2{ fill:var(--sky); }
+  .wn3{ fill:var(--sun); }
+  .wn4{ fill:var(--coral); }
+  .slide.active .wn1{ animation-delay:1s; }
+  .slide.active .wn2{ animation-delay:1.15s; }
+  .slide.active .wn3{ animation-delay:1.3s; }
+  .slide.active .wn4{ animation-delay:1.45s; }
+
+  .wjosh{ font-family:var(--mono); font-size:10px; font-weight:600; letter-spacing:.08em; fill:var(--ink); opacity:0; }
+  .slide.active .wjosh{ animation:wfade .4s ease .35s both; }
+
+  .wname{ font-family:var(--display); font-weight:800; font-size:13px; fill:var(--cream); opacity:0; }
+  .wsub{ font-family:var(--mono); font-size:7.5px; fill:rgba(245,242,234,.65); opacity:0; }
+  .slide.active .wname, .slide.active .wsub{ animation:wfade .45s ease both; }
+  .slide.active .wn1t{ animation-delay:1.15s; }
+  .slide.active .wn2t{ animation-delay:1.3s; }
+  .slide.active .wn3t{ animation-delay:1.45s; }
+  .slide.active .wn4t{ animation-delay:1.6s; }
+  @keyframes wfade{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);} }
+
   /* stat grid */
   .statgrid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:24px; }
   .stat{ padding:16px 14px; border-radius:16px; background:rgba(245,242,234,.07);
@@ -352,6 +388,39 @@
       </div>
     </div>
 
+    <div class="slide" data-dur="7500">
+      <div class="eyebrow">Beyond the numbers</div>
+      <h1 style="font-size:clamp(28px,8vw,40px)">Josh helped a<br>lot of <span class="grn">people</span>.</h1>
+      <div class="webchart">
+        <svg viewBox="0 0 320 230">
+          <line class="wline" x1="160" y1="115" x2="58" y2="46" pathLength="1"/>
+          <line class="wline" x1="160" y1="115" x2="262" y2="46" pathLength="1"/>
+          <line class="wline" x1="160" y1="115" x2="58" y2="184" pathLength="1"/>
+          <line class="wline" x1="160" y1="115" x2="262" y2="184" pathLength="1"/>
+
+          <circle class="wnode wcenter" cx="160" cy="115" r="25"/>
+          <text class="wjosh" x="160" y="119" text-anchor="middle">JOSH</text>
+
+          <circle class="wnode wn1" cx="58" cy="46" r="17"/>
+          <text class="wname wn1t" x="58" y="15" text-anchor="middle">Logan</text>
+          <text class="wsub wn1t" x="58" y="26" text-anchor="middle">Mentorship &amp; follow-ups</text>
+
+          <circle class="wnode wn2" cx="262" cy="46" r="17"/>
+          <text class="wname wn2t" x="262" y="15" text-anchor="middle">Ereca</text>
+          <text class="wsub wn2t" x="262" y="26" text-anchor="middle">OP-35 query</text>
+
+          <circle class="wnode wn3" cx="58" cy="184" r="17"/>
+          <text class="wname wn3t" x="58" y="213" text-anchor="middle">Mandy</text>
+          <text class="wsub wn3t" x="58" y="224" text-anchor="middle">ADO design</text>
+
+          <circle class="wnode wn4" cx="262" cy="184" r="17"/>
+          <text class="wname wn4t" x="262" y="213" text-anchor="middle">Leigh</text>
+          <text class="wsub wn4t" x="262" y="224" text-anchor="middle">Databricks architecture</text>
+        </svg>
+      </div>
+      <p class="note">Four names, four different problems — same instinct to jump in.</p>
+    </div>
+
     <div class="slide" data-dur="12000">
       <div class="eyebrow">That's the wrap</div>
       <h1 style="font-size:clamp(26px,7vw,34px)">Four months in.<br>Best suited for<br><span class="grn">BID IV or Coordinator</span>.</h1>
@@ -431,7 +500,7 @@
     if(i===4) count('n-days',6.38,1300,2);
     if(i===5) count('n-sams',5,900);
     if(i===6) count('n-cms',15,1100);
-    if(i===8) setTimeout(confetti,400);
+    if(i===slides.length-1) setTimeout(confetti,400);
     pairingBtn.classList.toggle('show', i===0);
     replayBtn.classList.toggle('show', i===slides.length-1);
   }
