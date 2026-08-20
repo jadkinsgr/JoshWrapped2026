@@ -200,15 +200,40 @@
   .tap{ position:absolute; inset:0; z-index:5; display:flex; }
   .tap .z{ flex:1; cursor:pointer; }
 
+  /* floating CTAs (pairing link on slide 1, replay button on the last slide) —
+     these sit outside #slides so they stack above .tap and are actually clickable */
+  .floatcta{
+    position:absolute; left:26px; bottom:56px; z-index:7;
+    opacity:0; transform:translateY(12px); pointer-events:none;
+    transition:opacity .4s ease, transform .4s ease;
+  }
+  .floatcta.show{ opacity:1; transform:translateY(0); pointer-events:auto; }
+
   .replay{
-    margin-top:22px; align-self:flex-start;
     font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase;
     background:var(--green-bright); color:var(--ink); border:none;
     padding:13px 24px; border-radius:99px; cursor:pointer; font-weight:500;
-    box-shadow:0 6px 24px var(--green-glow); position:relative; z-index:7;
+    box-shadow:0 6px 24px var(--green-glow); transition:transform .2s ease;
   }
   .replay:hover{ transform:scale(1.04); }
-  .replay{ transition:transform .2s ease; }
+
+  .pairing{
+    display:inline-flex; align-items:center; gap:8px; text-decoration:none;
+    font-family:var(--mono); font-size:12px; letter-spacing:.04em; text-transform:uppercase;
+    color:var(--ink); background:var(--sun); font-weight:600;
+    padding:12px 18px; border-radius:99px;
+    animation:pairingGlow 2s ease-in-out infinite;
+  }
+  .pairing:hover{ transform:scale(1.04); }
+  .pairing .arrow{ display:inline-block; animation:arrowNudge 1.3s ease-in-out infinite; }
+  @keyframes pairingGlow{
+    0%,100%{ box-shadow:0 0 0 0 rgba(255,214,102,.55), 0 4px 18px rgba(255,214,102,.35); }
+    50%{ box-shadow:0 0 0 9px rgba(255,214,102,0), 0 4px 18px rgba(255,214,102,.5); }
+  }
+  @keyframes arrowNudge{
+    0%,100%{ transform:translateX(0); }
+    50%{ transform:translateX(5px); }
+  }
 
   .foot{ position:absolute; bottom:16px; left:26px; z-index:4;
          font-family:var(--mono); font-size:9.5px; letter-spacing:.14em; text-transform:uppercase;
@@ -235,7 +260,7 @@
 
   <div class="slides" id="slides">
 
-    <div class="slide" data-dur="4500">
+    <div class="slide" data-dur="7000">
       <div class="eyebrow">Josh Adkins</div>
       <h1>Josh's year,<br><span class="grn">wrapped</span>.</h1>
       <p class="sub">Four months at Deaconess. Eleven years of instinct behind it. Here's what the data says.</p>
@@ -338,11 +363,12 @@
         <div class="stat"><div class="n">6.38</div><div class="l">Avg days</div></div>
         <div class="stat"><div class="n">11+</div><div class="l">Years in healthcare</div></div>
       </div>
-      <button class="replay" id="replay">↺ Play again</button>
     </div>
 
   </div>
 
+  <a class="pairing floatcta" id="pairing" href="https://www.youtube.com/watch?v=b7k0a5hYnSI&list=RDb7k0a5hYnSI&start_radio=1" target="_blank" rel="noopener noreferrer">🎧 Recommended pairing <span class="arrow">→</span></a>
+  <button class="replay floatcta" id="replay">↺ Play again</button>
   <div class="tap"><div class="z" id="zprev"></div><div class="z" id="znext"></div></div>
   <div class="foot">Competencies Portfolio · BID III → IV</div>
 </div>
@@ -396,6 +422,9 @@
     }
   }
 
+  const pairingBtn=document.getElementById('pairing');
+  const replayBtn=document.getElementById('replay');
+
   function onEnter(i){
     if(i===1) count('n-total',349,1300);
     if(i===3){ resetBars(); setTimeout(bars,200); }
@@ -403,6 +432,8 @@
     if(i===5) count('n-sams',5,900);
     if(i===6) count('n-cms',15,1100);
     if(i===8) setTimeout(confetti,400);
+    pairingBtn.classList.toggle('show', i===0);
+    replayBtn.classList.toggle('show', i===slides.length-1);
   }
 
   function go(n){
@@ -445,7 +476,7 @@
     slides.forEach(s=>s.classList.remove('active')); go(0);
   });
 
-  slides[0].classList.add('active'); segs[0].classList.add('active');
+  slides[0].classList.add('active'); segs[0].classList.add('active'); onEnter(0);
 })();
 </script>
 </body>
